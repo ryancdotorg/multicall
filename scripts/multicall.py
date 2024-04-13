@@ -31,7 +31,7 @@ print("""
 int main(int argc, char *argv[]) {
   char *argv0 = argv[0];
   int i = 0;
-  char *prog;
+  char *prog = NULL;
   while (0 < argc && NULL != argv) {
     prog = i ? argv[0] : basename(argv[0]);
 """.rstrip())
