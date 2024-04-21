@@ -22,7 +22,7 @@ print("""
 #include <stddef.h>
 #include <stdio.h>
 #include <libgen.h>
-""")
+""".lstrip())
 
 for applet in applets.keys():
     print(f'int {applet}_main(int argc, char *argv[]);')

@@ -18,7 +18,7 @@ COMPILE = $(CC) $(CPPFLAGS) $(CFLAGS)
 
 all: bin/multicall-miniverify-sha256sum bin/multicall-minisign-sha256sum bin/multicall-miniverify-sha256sum-xzdec
 
-bin/multicall-miniverify-sha256sum: obj/multicall-miniverify-sha256sum.o ../sha256sum/obj/sha256sum_multicall.o ../minisign/obj/miniverify_multicall.o
+bin/multicall-miniverify-sha256sum: obj/multicall-miniverify-sha256sum.o ../sha256sum/obj/sha256sum_nacl_multicall.o ../minisign/obj/miniverify_multicall.o
 	@mkdir -p $(@D)
 	$(COMPILE) $^ $(LDFLAGS) -lsodium -lpthread -o $@
 
@@ -26,21 +26,45 @@ gen/multicall-miniverify-sha256sum.c: scripts/multicall.py
 	@mkdir -p $(@D)
 	python3 $< sha256sum miniverify,minisign > $@
 
-bin/multicall-minisign-sha256sum: obj/multicall-minisign-sha256sum.o ../sha256sum/obj/sha256sum_multicall.o ../minisign/obj/minisign_multicall.o
+bin/multicall-miniverify-sha2sum: obj/multicall-miniverify-sha2sum.o ../sha256sum/obj/sha2sum_multicall.o ../minisign/obj/miniverify_multicall.o
 	@mkdir -p $(@D)
 	$(COMPILE) $^ $(LDFLAGS) -lsodium -lpthread -o $@
 
-gen/multicall-minisign-sha256sum.c: scripts/multicall.py
+gen/multicall-miniverify-sha2sum.c: scripts/multicall.py
 	@mkdir -p $(@D)
-	python3 $< sha256sum minisign,miniverify > $@
+	python3 $< sha2sum,sha256sum,sha384sum,sha512sum miniverify,minisign > $@
 
-bin/multicall-miniverify-sha256sum-xzdec: obj/multicall-miniverify-sha256sum-xzdec.o ../sha256sum/obj/sha256sum_multicall.o ../minisign/obj/miniverify_multicall.o ../xz/src/xzdec/xzdec-multicall.o
+bin/multicall-minisign-sha2sum: obj/multicall-minisign-sha2sum.o ../sha256sum/obj/sha2sum_multicall.o ../minisign/obj/minisign_multicall.o
+	@mkdir -p $(@D)
+	$(COMPILE) $^ $(LDFLAGS) -lsodium -lpthread -o $@
+
+gen/multicall-minisign-sha2sum.c: scripts/multicall.py
+	@mkdir -p $(@D)
+	python3 $< sha2sum,sha256sum,sha384sum,sha512sum minisign,miniverify > $@
+
+bin/multicall-miniverify-sha256sum-xzdec: obj/multicall-miniverify-sha256sum-xzdec.o ../sha256sum/obj/sha256sum_nacl_multicall.o ../minisign/obj/miniverify_multicall.o ../xz/src/xzdec/xzdec-multicall.o
 	@mkdir -p $(@D)
 	$(COMPILE) $^ $(LDFLAGS) -lsodium -lpthread -o $@
 
 gen/multicall-miniverify-sha256sum-xzdec.c: scripts/multicall.py
 	@mkdir -p $(@D)
 	python3 $< sha256sum miniverify,minisign xzdec > $@
+
+bin/multicall-miniverify-sha2sum-xzdec: obj/multicall-miniverify-sha2sum-xzdec.o ../sha256sum/obj/sha2sum_multicall.o ../minisign/obj/miniverify_multicall.o ../xz/src/xzdec/xzdec-multicall.o
+	@mkdir -p $(@D)
+	$(COMPILE) $^ $(LDFLAGS) -lsodium -lpthread -o $@
+
+gen/multicall-miniverify-sha2sum-xzdec.c: scripts/multicall.py
+	@mkdir -p $(@D)
+	python3 $< sha2sum,sha256sum,sha384sum,sha512sum miniverify,minisign xzdec > $@
+
+bin/multicall-minisign-sha2sum-xzdec: obj/multicall-minisign-sha2sum-xzdec.o ../sha256sum/obj/sha2sum_multicall.o ../minisign/obj/minisign_multicall.o ../xz/src/xzdec/xzdec-multicall.o
+	@mkdir -p $(@D)
+	$(COMPILE) $^ $(LDFLAGS) -lsodium -lpthread -o $@
+
+gen/multicall-minisign-sha2sum-xzdec.c: scripts/multicall.py
+	@mkdir -p $(@D)
+	python3 $< sha2sum,sha256sum,sha384sum,sha512sum minisign,miniverify xzdec > $@
 
 # generic build rules
 obj/%.o: src/%.c src/%.h
